@@ -246,156 +246,46 @@
         .next { right: 0; border-radius: 3px 0 0 3px; }
         .carousel-control:hover { background-color: rgba(0,0,0,0.8); }
 
-        /* Pre-save Module */
-        .pre-save-module {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 1.5em;
-            margin-top: 2em;
-            border: 1px solid var(--primary-color);
-        }
-        .pre-save-module h3 {
-            margin: 0 0 1em 0;
-            font-size: 1.5em;
-            color: var(--text-color);
-        }
-        .pre-save-buttons, .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1em;
-            flex-wrap: wrap;
-        }
-        .pre-save-buttons { margin-bottom: 1em; }
-        .pre-save-button, .share-button {
-            text-decoration: none;
-            color: white;
-            padding: 0.8em 1.5em;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        .pre-save-button:hover, .share-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .pre-save-button.spotify { background-color: #1DB954; }
-        .pre-save-button.apple { background-color: #FA57C1; }
-        .pre-save-button.deezer { background-color: #FEAA2D; }
-        .share-button {
-            background-color: var(--primary-color);
-        }
-
-        /* World Tour */
-        .tour-map-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto 2em auto;
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 1em;
-            aspect-ratio: 16/9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-size: 1.2em;
-            color: var(--text-dim);
-            border: 1px dashed var(--border-color);
-        }
-        .tour-dates-list {
+        /* Events */
+        .events ul {
             list-style: none;
             padding: 0;
-            max-width: 600px;
-            margin: auto;
             display: flex;
             flex-direction: column;
-            gap: 1em;
+            gap: 1.5em;
+            max-width: 500px;
+            margin: auto;
         }
-        .tour-date-item {
+        .event-ticket {
             background: var(--ticket-bg);
             color: var(--ticket-color);
-            padding: 1.2em 1.5em;
+            padding: 1em 1.5em;
             border-radius: 8px;
+            text-align: left;
+            position: relative;
             display: grid;
-            grid-template-columns: 1fr auto auto;
+            grid-template-columns: 1fr auto;
             align-items: center;
-            gap: 1.5em;
+            gap: 1em;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            border-left: 5px solid var(--primary-color);
-            transition: all 0.3s ease;
+            --mask: radial-gradient(circle at -1em 50%, transparent 1em, #fff 1em),
+                    radial-gradient(circle at calc(100% + 1em) 50%, transparent 1em, #fff 1em);
+            -webkit-mask: var(--mask);
+            mask: var(--mask);
+            transition: background 0.5s, color 0.5s;
         }
         .event-ticket h3 { margin: 0; font-size: 1.4em; }
         .event-ticket p { margin: 0.2em 0 0; color: #888; }
         .event-ticket a {
             background: var(--primary-color);
             color: white;
-            padding: 0.7em 1.2em;
+            padding: 0.5em 1em;
             text-decoration: none;
             border-radius: 5px;
             font-weight: bold;
             transition: background 0.3s;
         }
         .event-ticket a:hover { opacity: 0.8; }
-        .tour-date-item.sold-out {
-            border-left-color: #888;
-            opacity: 0.7;
-        }
-        .tour-date-item h3 { margin: 0; font-size: 1.4em; }
-        .tour-date-item p { margin: 0; color: #888; }
-        .tour-date-item a {
-            background: var(--primary-color);
-            color: white;
-            padding: 0.7em 1.2em;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background 0.3s;
-            text-align: center;
-        }
-        .tour-date-item a:hover { opacity: 0.8; }
-        .tour-date-item.sold-out a {
-            background: #555;
-            cursor: not-allowed;
-        }
-
-        /* Fan Wall */
-        .fan-wall-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5em;
-            max-width: 1000px;
-            margin: auto;
-        }
-        .fan-story-item {
-            aspect-ratio: 9 / 16;
-            border-radius: 12px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        }
-        .fan-story-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        }
-        .fan-story-item .story-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .fan-story-item .story-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1em;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: white;
-        }
 
         /* Gallery */
         .gallery-mosaic {
@@ -519,91 +409,62 @@
         }
     </style>
 </head>
-<body data-theme="midnight">
+<body data-theme="dark">
     <header>
         <h1>Iasmina Alexandra Ilie</h1>
-        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">☀️</button>
+        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">🌙</button>
         <nav>
             <a href="#bio" class="active">Bio</a>
             <a href="#music">Music</a>
             <a href="#events">Events</a>
             <a href="#gallery">Gallery</a>
-            <a href="#fan-wall">Fan Wall</a>
             <a href="blog.html">Blog</a>
             <a href="#contact">Contact</a>
         </nav>
     </header>
     <div class="container">
         <section id="bio" class="bio scroll-animate">
-            <img src="1.jpg" alt="Iasmina Alexandra Ilie" loading="lazy">
+            <img src="1.jpg" alt="Your Professional Photo" loading="lazy">
             <h2>Iasmina Alexandra Ilie</h2>
             <p>
-                My sound blends soulful melodies with unforgettable rhythms. My upcoming LP, "Moonlight Reverie", drops in November 2025 and dives deeper into my sonic journey.
+                My sound blends soulful melodies with unforgettable rhythms. My latest EP, released in June 2025, features a collaboration with [Artist X] and dives deeper into my sonic journey.
+                <br><br>
+                Explore my music on <a href="https://music.apple.com/us/browse" target="_blank">Apple Music</a> and <a href="https://bandcamp.com/" target="_blank">Bandcamp</a>.
             </p>
-            <div class="pre-save-module">
-                <h3>Pre-save "Moonlight Reverie"</h3>
-                <div class="pre-save-buttons">
-                    <a href="#" target="_blank" class="pre-save-button spotify">
-                        <span>Spotify</span>
-                    </a>
-                    <a href="#" target="_blank" class="pre-save-button apple">
-                        <span>Apple Music</span>
-                    </a>
-                    <a href="#" target="_blank" class="pre-save-button deezer">
-                        <span>Deezer</span>
-                    </a>
-                </div>
-                <div class="share-buttons"><a href="#" class="share-button">Share with friends</a></div>
-            </div>
         </section>
 
         <section id="music" class="section scroll-animate">
-            <h2>Latest Releases</h2>
-            <div class="carousel-container">
-                <div class="carousel-slide">
-                    <img src="https://placehold.co/600x400/ff512f/white?text=Album+Art+1" alt="Album Art 1">
-                    <h3>Echoes of Tomorrow</h3>
-                    <p>Released: May 2025</p>
-                    <a href="#" target="_blank">Listen Now</a>
+            <h2>Featured Music</h2>
+            <div class="music-carousel" onmouseenter="pauseCarousel()" onmouseleave="resumeCarousel()">
+                <div class="carousel-slide active">
+                    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/3n3Ppam7vgaVa1iaRUc9Lp?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://placehold.co/600x400/0f0c29/white?text=Album+Art+2" alt="Album Art 2">
-                    <h3>Starlight Serenade</h3>
-                    <p>Released: Feb 2025</p>
-                    <a href="#" target="_blank">Listen Now</a>
+                     <iframe allow="autoplay *; encrypted-media *; fullscreen *" frameborder="0" height="350" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/album/positions/1536502 Positions - Single/15365023 Positions?i=1536502363"></iframe>
                 </div>
                 <div class="carousel-slide">
-                    <img src="https://placehold.co/600x400/dd2476/white?text=Album+Art+3" alt="Album Art 3">
-                    <h3>Whispers in the Dark</h3>
-                    <p>Released: Nov 2024</p>
-                    <a href="#" target="_blank">Listen Now</a>
+                    <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
                 </div>
+
+                <a class="carousel-control prev" onclick="plusSlides(-1)">❮</a>
+                <a class="carousel-control next" onclick="plusSlides(1)">❯</a>
             </div>
-            <button class="carousel-control prev">❮</button>
-            <button class="carousel-control next">❯</button>
         </section>
 
         <section id="events" class="section scroll-animate">
-            <h2>World Tour 2026</h2>
-            <div class="tour-map-container scroll-animate">
-                Interactive map loading...
-            </div>
-            <ul class="tour-dates-list">
-                <li class="tour-date-item scroll-animate" data-event-id="copenhagen-dk">
-                    <div><h3>Copenhagen, DK</h3><p>Royal Arena</p></div>
-                    <a href="#" target="_blank">Get Tickets</a>
+            <h2>Upcoming Gigs</h2>
+            <ul class="event-list">
+                <li class="event-ticket">
+                    <div><h3>Copenhagen, DK</h3><p>Live at Vega</p></div>
+                    <a href="#" target="_blank">Location</a>
                 </li>
-                <li class="tour-date-item scroll-animate" data-event-id="berlin-de">
-                    <div><h3>Berlin, DE</h3><p>Mercedes-Benz Arena</p></div>
-                    <a href="#" target="_blank">Get Tickets</a>
+                <li class="event-ticket">
+                    <div><h3>Aarhus, DK</h3><p>Godsbanen Festival</p></div>
+                    <a href="#" target="_blank">Location</a>
                 </li>
-                <li class="tour-date-item scroll-animate" data-event-id="paris-fr">
-                    <div><h3>Paris, FR</h3><p>Accor Arena</p></div>
-                    <a href="#" target="_blank">Get Tickets</a>
-                </li>
-                <li class="tour-date-item scroll-animate" data-event-id="london-uk">
-                    <div><h3>London, UK</h3><p>The O2</p></div>
-                    <a href="#" target="_blank">Get Tickets</a>
+                <li class="event-ticket">
+                    <div><h3>Online</h3><p>Starlight Session (Livestream)</p></div>
+                    <a href="#" target="_blank">Watch</a>
                 </li>
             </ul>
         </section>
@@ -611,61 +472,36 @@
         <section id="gallery" class="section scroll-animate">
             <h2>Gallery</h2>
             <div class="gallery-mosaic">
-                <div class="mosaic-item"><img src="https://placehold.co/400x400/f80759/white?text=Photo" alt="Concert photo 1" loading="lazy"></div>
-                <div class="mosaic-item"><img src="https://placehold.co/400x400/c94b4b/white?text=Backstage" alt="Backstage photo" loading="lazy"></div>
-                <div class="mosaic-item"><img src="https://placehold.co/400x400/4b134f/white?text=Studio" alt="Studio photo" loading="lazy"></div>
-                <div class="mosaic-item"><img src="https://placehold.co/400x400/dd2476/white?text=Live" alt="Live clip 1" loading="lazy"></div>
+                <div class="mosaic-item"><img src="https://placehold.co/400x400/f80759/white?text=Live+Clip" alt="Live clip 1" loading="lazy"></div>
+                <div class="mosaic-item"><img src="https://placehold.co/400x400/c94b4b/white?text=TikTok" alt="TikTok reel 1" loading="lazy"></div>
+                <div class="mosaic-item"><img src="https://placehold.co/400x400/4b134f/white?text=Studio" alt="In the studio" loading="lazy"></div>
+                <div class="mosaic-item"><img src="https://placehold.co/400x400/dd2476/white?text=Tour" alt="Tour photo" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/ff512f/white?text=Live" alt="Live clip 2" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/0f0c29/white?text=Reel" alt="TikTok reel 2" loading="lazy"></div>
             </div>
         </section>
 
-        <section id="fan-wall" class="section scroll-animate">
-            <h2>Fan Wall</h2>
-            <p>Latest stories from <a href="https://www.instagram.com/explore/tags/iasminalive/" target="_blank">#IasminaLive</a></p>
-            <div class="fan-wall-grid">
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/f80759/white?text=LIVE+SHOW" class="story-bg" alt="Fan story 1" loading="lazy">
-                    <div class="story-overlay">@musiclover22</div>
-                </div>
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/c94b4b/white?text=AMAZING+NIGHT" class="story-bg" alt="Fan story 2" loading="lazy">
-                    <div class="story-overlay">@concertfan</div>
-                </div>
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/4b134f/white?text=BEST+VOCALS" class="story-bg" alt="Fan story 3" loading="lazy">
-                    <div class="story-overlay">@alex_p</div>
-                </div>
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/dd2476/white?text=IASMINA+ROCKS" class="story-bg" alt="Fan story 4" loading="lazy">
-                    <div class="story-overlay">@livemusicjunkie</div>
-                </div>
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/ff512f/white?text=UNFORGETTABLE" class="story-bg" alt="Fan story 5" loading="lazy">
-                    <div class="story-overlay">@giggoer</div>
-                </div>
-                <div class="fan-story-item">
-                    <img src="https://placehold.co/300x500/0f0c29/white?text=%23IasminaLive" class="story-bg" alt="Fan story 6" loading="lazy">
-                    <div class="story-overlay">@fanfromdayone</div>
-                </div>
-            </div>
-        </section>
-
         <section id="contact" class="section scroll-animate">
-            <h2>Contact</h2>
-            <p>For bookings and inquiries, please reach out:</p>
-            <p>Email: <a href="mailto:info@iasminamusic.com">info@iasminamusic.com</a></p>
-            <div class="social-links">
-                <a href="#" target="_blank" title="Spotify"><img src="https://placehold.co/30x30/1DB954/white?text=S" alt="Spotify"></a>
-                <a href="#" target="_blank" title="Apple Music"><img src="https://placehold.co/30x30/FA57C1/white?text=A" alt="Apple Music"></a>
-                <a href="#" target="_blank" title="YouTube"><img src="https://placehold.co/30x30/FF0000/white?text=Y" alt="YouTube"></a>
-                <a href="#" target="_blank" title="Instagram"><img src="https://placehold.co/30x30/E4405F/white?text=I" alt="Instagram"></a>
-                <a href="#" target="_blank" title="TikTok"><img src="https://placehold.co/30x30/000000/white?text=T" alt="TikTok"></a>
+            <h2>Get In Touch</h2>
+            <p>For bookings, collaborations, or just to say hi!</p>
+            <div class="contact-badges">
+                <a href="https://wa.me/4571584821" target="_blank" class="contact-badge whatsapp">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 14c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6s0-.3.1-.4.2-.2.4-.4.1-.2.2-.4.1-.3 0-.4c-.1-.1-.6-1.5-.8-2s-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3s-.6.6-.6 1.2c0 .7.6 1.4.7 1.5.1.1 1.2 1.9 2.9 2.6.4.2.7.3.9.4.5.2.9.1 1.2-.1.4-.2.6-.8.8-1 .1-.2.1-.4 0-.5l-.2-.1zM12 2a10 10 0 0 0-10 10 10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2zm0 18.2c-4.5 0-8.2-3.7-8.2-8.2S7.5 3.8 12 3.8s8.2 3.7 8.2 8.2-3.7 8.2-8.2 8.2z"/></svg>
+                    <span>Text on WhatsApp</span>
+                </a>
+                <a href="https://signal.me/#" target="_blank" class="contact-badge signal">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 2.5c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5zm0 15c-4.1 0-7.5-3.4-7.5-7.5S7.9 4.5 12 4.5s7.5 3.4 7.5 7.5-3.4 7.5-7.5 7.5zm-4-6.5h2v5h-2v-5zm3 0h2v5h-2v-5zm3-2.5h2v7.5h-2v-7.5z"/></svg>
+                    <span>Text on Signal</span>
+                </a>
+                 <a href="mailto:iasminaalexandrailie@outlook.com" class="contact-badge" style="background-color: #777; color: white;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span>Email Me</span>
+                 </a>
             </div>
         </section>
     </div>
     <footer>
-        <p>© 2026 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
+        <p>© 2025 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
     </footer>
     <script>
         // --- SMOOTH SCROLL & ACTIVE NAV ---
@@ -744,39 +580,6 @@
             carouselTimer = setTimeout(autoCarousel, 5000);
         });
 
-        // --- TOUR DATES API SIMULATION ---
-        const fetchTourStatus = () => {
-            // In a real scenario, this would be an actual API call to Eventbrite, etc.
-            // const response = await fetch('https://www.eventbriteapi.com/v3/users/me/events/...');
-            const dummyApiData = {
-                'copenhagen-dk': { status: 'live', url: 'https://www.eventbrite.com/' },
-                'berlin-de': { status: 'sold_out', url: 'https://www.eventbrite.com/' },
-                'paris-fr': { status: 'live', url: 'https://www.eventbrite.com/' },
-                'london-uk': { status: 'coming_soon', url: 'https://www.eventbrite.com/' }
-            };
-
-            document.querySelectorAll('.tour-date-item').forEach(item => {
-                const eventId = item.dataset.eventId;
-                const eventData = dummyApiData[eventId];
-                if (eventData) {
-                    const link = item.querySelector('a');
-                    link.href = eventData.url;
-
-                    if (eventData.status === 'sold_out') {
-                        item.classList.add('sold-out');
-                        link.textContent = 'Sold Out';
-                        link.style.pointerEvents = 'none';
-                    } else if (eventData.status === 'coming_soon') {
-                        item.classList.add('coming-soon');
-                        link.textContent = 'Notify Me';
-                        link.style.pointerEvents = 'none';
-                        link.style.background = '#6c757d';
-                    }
-                }
-            });
-        };
-        fetchTourStatus();
-
         // --- SCROLL ANIMATIONS ---
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -790,6 +593,7 @@
         document.querySelectorAll('.scroll-animate').forEach(el => {
             scrollObserver.observe(el);
         });
+
     </script>
 </body>
 </html>
