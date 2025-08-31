@@ -1241,116 +1241,104 @@
             });
         }
  
-        function loadVisualizerDependencies() {
-            return loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
-        }
- 
-        function loadPanoramaDependencies() {
-            return loadVisualizerDependencies()
-                .then(() => loadScript('https://cdn.jsdelivr.net/npm/panolens@0.11.0/build/panolens.min.js'));
-        }
- 
         function initVisualizer() {
             if (document.body.dataset.visualizerInitialized) return;
             document.body.dataset.visualizerInitialized = true;
- 
+
             const audioElement = document.getElementById('audio-player');
-            const header = document.querySelector('header');
             const canvas = document.getElementById('visualizer-canvas');
+            const ctx = canvas.getContext('2d');
+            
             let audioContext, analyser, source, dataArray, bufferLength;
-            let scene, camera, renderer, visualizerObjects = {};
-            let currentViz = 'bars';
-            let beatTimeout;
- 
-            function initThree() { /* ... */ } // (Implementation omitted for brevity, assumed from original code)
-            function initAudio() { /* ... */ }
-            function createVisualizers() { /* ... */ }
-            function animate() { /* ... */ }
- 
-            // (The full implementation of the functions above is taken from the original code)
-            function initThree() {
-                scene = new THREE.Scene();
-                camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
-                camera.position.z = 100;
-                renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-                renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-                renderer.setClearColor(0x000000, 0);
-            }
-            function initAudio() {
+
+            function setupAudioContext() {
                 if (audioContext) return;
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                source = audioContext.createMediaElementSource(audioElement);
-                analyser = audioContext.createAnalyser();
-                source.connect(analyser);
-                analyser.connect(audioContext.destination);
-                analyser.fftSize = 256;
-                bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-            }
-            function createVisualizers() {
-                const barsGroup = new THREE.Group();
-                const barWidth = canvas.clientWidth / bufferLength / 1.5;
-                for (let i = 0; i < bufferLength; i++) {
-                    const barGeometry = new THREE.BoxGeometry(barWidth, 1, barWidth);
-                    const barMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-                    const bar = new THREE.Mesh(barGeometry, barMaterial);
-                    bar.position.x = (i - bufferLength / 2) * (barWidth * 1.5);
-                    barsGroup.add(bar);
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    source = audioContext.createMediaElementSource(audioElement);
+                    analyser = audioContext.createAnalyser();
+                    source.connect(analyser);
+                    analyser.connect(audioContext.destination);
+                    analyser.fftSize = 256;
+                    bufferLength = analyser.frequencyBinCount;
+                    dataArray = new Uint8Array(bufferLength);
+                } catch (e) {
+                    console.error("Error setting up Web Audio API:", e);
                 }
-                visualizerObjects.bars = barsGroup;
-                scene.add(barsGroup);
-                const particleCount = 2000;
-                const particlesGeometry = new THREE.BufferGeometry();
-                const posArray = new Float32Array(particleCount * 3);
-                for (let i = 0; i < particleCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 200; }
-                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-                const particleMaterial = new THREE.PointsMaterial({ size: 0.5, color: 0xffffff });
-                const particles = new THREE.Points(particlesGeometry, particleMaterial);
-                particles.visible = false;
-                visualizerObjects.particles = particles;
-                scene.add(particles);
-                const orbGeometry = new THREE.SphereGeometry(20, 32, 32);
-                const orbMaterial = new THREE.MeshNormalMaterial({ wireframe: true });
-                const orb = new THREE.Mesh(orbGeometry, orbMaterial);
-                orb.visible = false;
-                visualizerObjects.orbs = orb;
-                scene.add(orb);
             }
+
+            function resizeCanvas() {
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas, false);
+            resizeCanvas();
+
+            let hue = 0;
             function animate() {
                 requestAnimationFrame(animate);
                 if (!analyser) return;
+
                 analyser.getByteFrequencyData(dataArray);
-                if (currentViz === 'bars') { visualizerObjects.bars.children.forEach((bar, i) => { const scale = dataArray[i] / 5; bar.scale.y = Math.max(scale, 0.1); }); }
-                else if (currentViz === 'particles') { const positions = visualizerObjects.particles.geometry.attributes.position.array; const lowFreq = dataArray[5] / 255; for (let i = 0; i < positions.length; i+=3) { positions[i+1] += lowFreq * (Math.random() - 0.5) * 2; if (positions[i+1] > 100) positions[i+1] = -100; } visualizerObjects.particles.geometry.attributes.position.needsUpdate = true; visualizerObjects.particles.rotation.y += lowFreq * 0.01; }
-                else if (currentViz === 'orbs') { const bass = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10; const mid = dataArray.slice(10, 50).reduce((a, b) => a + b, 0) / 40; const scale = 1 + (bass / 255) * 0.5; visualizerObjects.orbs.scale.set(scale, scale, scale); visualizerObjects.orbs.rotation.x += mid / 255 * 0.01; visualizerObjects.orbs.rotation.y += mid / 255 * 0.01; }
-                const bassEnergy = dataArray.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
-                if (bassEnergy > 180 && !header.classList.contains('beat-pulse')) { header.classList.add('beat-pulse'); clearTimeout(beatTimeout); beatTimeout = setTimeout(() => header.classList.remove('beat-pulse'), 120); }
-                renderer.render(scene, camera);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const barWidth = (canvas.width / bufferLength) * 1.5;
+                let x = 0;
+
+                for (let i = 0; i < bufferLength; i++) {
+                    const barHeight = (dataArray[i] / 255) * canvas.height * 1.2;
+                    
+                    const color = `hsl(${hue + i * 2}, 100%, 60%)`;
+                    ctx.fillStyle = color;
+                    ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+                    
+                    x += barWidth + 1;
+                }
+                hue = (hue + 1) % 360;
             }
- 
-            audioElement.addEventListener('play', () => { initAudio(); audioContext.resume(); });
+
+            function initializeAndResumeAudio() {
+                if (!audioContext) {
+                    setupAudioContext();
+                }
+                if (audioContext && audioContext.state === 'suspended') {
+                    audioContext.resume().catch(e => console.error("Audio context resume failed:", e));
+                }
+            }
+
+            audioElement.addEventListener('play', initializeAndResumeAudio);
+
             document.querySelectorAll('#viz-controls button').forEach(button => {
                 button.addEventListener('click', () => {
-                    currentViz = button.dataset.viz;
-                    Object.values(visualizerObjects).forEach(obj => obj.visible = false);
-                    visualizerObjects[currentViz].visible = true;
-                    document.querySelector('#viz-controls button.active').classList.remove('active');
+                    document.querySelector('#viz-controls button.active')?.classList.remove('active');
                     button.classList.add('active');
+                    
+                    if (button.dataset.viz === 'bars') {
+                        initializeAndResumeAudio();
+                    }
                 });
             });
+
             document.querySelectorAll('#track-list button').forEach(button => {
                 button.addEventListener('click', () => {
+                    if (button.classList.contains('active')) return;
+                    
                     audioElement.src = button.dataset.src;
                     audioElement.play();
-                    document.querySelector('#track-list button.active').classList.remove('active');
+                    
+                    document.querySelector('#track-list button.active')?.classList.remove('active');
                     button.classList.add('active');
                 });
             });
- 
-            initThree();
-            createVisualizers();
+
+            const initialTrack = document.querySelector('#track-list button.active');
+            if (initialTrack) {
+                audioElement.src = initialTrack.dataset.src;
+            }
+            
             animate();
-            audioElement.src = document.querySelector('#track-list button.active').dataset.src;
+            console.log("Bars audio visualizer initialized.");
         }
  
         function initPanorama() {
