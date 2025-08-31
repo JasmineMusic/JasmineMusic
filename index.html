@@ -6,6 +6,22 @@
     <title>Musician Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Optimize Anti-flicker snippet -->
+    <style>.async-hide { opacity: 0 !important} </style>
+    <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+    h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+    (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+    })(window,document.documentElement,'async-hide','dataLayer',4000,
+    {'OPT-XXXXXXXX':true});</script>
+    <!-- Google Analytics / Optimize -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+      gtag('config', 'OPT-XXXXXXXX');
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/panolens@0.11.0/build/panolens.min.js"></script>
     <style>
         :root, [data-theme="dark"] {
@@ -766,9 +782,7 @@
         <section id="bio" class="bio scroll-animate">
             <img src="1.jpg" alt="Iasmina Alexandra Ilie" loading="lazy">
             <h2>Iasmina Alexandra Ilie</h2>
-            <p>
-                My sound blends soulful melodies with unforgettable rhythms. My upcoming LP, "Moonlight Reverie", drops in November 2025 and dives deeper into my sonic journey.
-            </p>
+            <p id="hero-copy">Dive into Moonlight</p>
             <div class="pre-save-module">
                 <h3>Pre-save "Moonlight Reverie"</h3>
                 <div class="pre-save-buttons">
@@ -922,12 +936,12 @@
         </form>
     </div>
  
-    <footer>
-        <p>© 2026 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
-    </footer>
-    <script>
-        // --- PERSONALIZED FAN JOURNEY & CHAT ---
-        document.addEventListener('DOMContentLoaded', () => {
+     <footer>
+         <p>© 2026 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
+     </footer>
+     <script>
+         // --- PERSONALIZED FAN JOURNEY & CHAT ---
+         document.addEventListener('DOMContentLoaded', () => {
             const vibeOverlay = document.getElementById('vibe-overlay');
             const themeToggle = document.getElementById('theme-toggle');
             const audioElement = document.getElementById('audio-player');
@@ -1033,12 +1047,48 @@
                 if (lowerInput.includes('moonlight') || lowerInput.includes('reverie') || lowerInput.includes('album')) {
                     return 'My upcoming LP, "Moonlight Reverie", drops in November 2025! It\'s a very personal project and I can\'t wait for you to hear it. You can pre-save it now from the Bio section.';
                 }
-                return "That's an interesting question! I'm an AI with limited knowledge. For other inquiries, please check the page or use the contact info. 😊";
+                 return "That's an interesting question! I'm an AI with limited knowledge. For other inquiries, please check the page or use the contact info. 😊";
+             }
+         });
+
+        // Sanity Live Preview for Tour Dates
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('preview') === 'true') {
+                console.log('Sanity preview mode enabled for tour dates.');
+                const tourList = document.querySelector('.tour-dates-list');
+                if (tourList) {
+                    const previewNotice = document.createElement('p');
+                    previewNotice.textContent = 'DRAFT PREVIEW MODE';
+                    previewNotice.style.color = 'var(--primary-color)';
+                    previewNotice.style.textAlign = 'center';
+                    previewNotice.style.fontSize = '1.2em';
+                    previewNotice.style.marginBottom = '1em';
+                    document.querySelector('#events h2').after(previewNotice);
+
+                    tourList.innerHTML = '';
+                    const previewDates = [
+                        { city: 'San Francisco, USA', venue: 'The Fillmore (Preview)', status: 'live' },
+                        { city: 'Tokyo, JP', venue: 'Budokan (Preview)', status: 'sold_out' },
+                    ];
+                    
+                    previewDates.forEach(date => {
+                        const item = document.createElement('li');
+                        item.className = 'tour-date-item';
+                        if (date.status === 'sold_out') item.classList.add('sold-out');
+                        
+                        item.innerHTML = `
+                            <div><h3>${date.city}</h3><p>${date.venue}</p></div>
+                            <a href="#" onclick="return false;" target="_blank">${date.status === 'sold_out' ? 'Sold Out' : 'Get Tickets'}</a>
+                        `;
+                        tourList.appendChild(item);
+                    });
+                }
             }
         });
- 
-        // --- SMOOTH SCROLL & ACTIVE NAV ---
-        document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+  
+         // --- SMOOTH SCROLL & ACTIVE NAV ---
+         document.querySelectorAll('nav a[href^="#"]').forEach(link => {
             link.addEventListener('click', function (event) {
                 event.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
@@ -1248,10 +1298,13 @@
                 }
             });
         };
-        fetchTourStatus();
-
-        // --- SCROLL ANIMATIONS ---
-        const scrollObserver = new IntersectionObserver((entries) => {
+        const urlParamsForTour = new URLSearchParams(window.location.search);
+        if (urlParamsForTour.get('preview') !== 'true') {
+            fetchTourStatus();
+        }
+ 
+         // --- SCROLL ANIMATIONS ---
+         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');

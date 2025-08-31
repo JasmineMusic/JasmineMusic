@@ -134,7 +134,45 @@
         </div>
     </div>
     <footer>
-        <p>&copy; 2025 <a href="index.html">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
+        <p>© 2025 <a href="index.html">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
     </footer>
-</body>
-</html>
+    <script>
+    // Sanity Live Preview for Blog Posts
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('preview') === 'true') {
+            console.log('Sanity preview mode enabled for blog posts.');
+            const blogContainer = document.querySelector('.container');
+            if (blogContainer) {
+                const existingPosts = blogContainer.querySelectorAll('.blog-post');
+                existingPosts.forEach(post => post.remove());
+                
+                const previewNotice = document.createElement('p');
+                previewNotice.textContent = 'DRAFT PREVIEW MODE ENABLED';
+                previewNotice.style.color = '#f80759';
+                previewNotice.style.textAlign = 'center';
+                previewNotice.style.fontWeight = 'bold';
+                previewNotice.style.fontSize = '1.2em';
+                previewNotice.style.marginBottom = '2em';
+                blogContainer.prepend(previewNotice);
+
+                const previewPosts = [
+                    { title: 'New Single "Reverie" - First Look (DRAFT)', content: 'This is a preview of the upcoming blog post about my new single. Stay tuned for the official release!' },
+                    { title: 'Studio Session Sneak Peek (DRAFT)', content: 'Here are some behind-the-scenes thoughts from my latest recording session. This content is not yet public.' },
+                ];
+
+                previewPosts.forEach(postData => {
+                    const postEl = document.createElement('div');
+                    postEl.className = 'blog-post';
+                    postEl.innerHTML = `
+                        <h2>${postData.title}</h2>
+                        <p>${postData.content} <a href="#" onclick="return false;">Read more...</a></p>
+                    `;
+                    blogContainer.appendChild(postEl);
+                });
+            }
+        }
+    });
+    </script>
+ </body>
+ </html>
