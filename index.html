@@ -45,7 +45,26 @@
             --ticket-bg: #2a2a2a;
             --ticket-color: #f0f0f0;
         }
-
+ 
+        [data-theme="epic"] {
+            --bg-grad-1: #b20a2c;
+            --bg-grad-2: #240b36;
+            --header-grad-1: #fc4a1a;
+            --header-grad-2: #f7b733;
+            --primary-color: #f7b733;
+            --text-color: #fff;
+            --text-dim: #ccc;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --section-bg: rgba(0, 0, 0, 0.6);
+            --border-color: #f7b733;
+            --bio-bg: rgba(0, 0, 0, 0.3);
+            --bio-shadow: rgba(0, 0, 0, 0.8);
+            --link-hover-bg: #f7b733;
+            --link-hover-color: #000;
+            --ticket-bg: #333;
+            --ticket-color: #fff;
+        }
+ 
         @keyframes gradient-shift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -57,7 +76,12 @@
             60% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); }
         }
-
+ 
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px 0px var(--primary-color); }
+            50% { box-shadow: 0 0 25px 8px transparent; }
+        }
+ 
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -495,6 +519,175 @@
             color: var(--primary-color);
             text-decoration: none;
         }
+ 
+        /* Vibe Onboarding Modal */
+        .vibe-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .vibe-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .vibe-modal {
+            background: var(--section-bg);
+            padding: 2.5em;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-top: 4px solid var(--primary-color);
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+        }
+        .vibe-overlay.visible .vibe-modal {
+            transform: scale(1);
+        }
+        .vibe-modal h2 { margin-top: 0; }
+        .vibe-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 1em; margin-top: 1.5em; }
+        .vibe-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1em 2em;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .vibe-button:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+ 
+        /* Chat Widget */
+        #chat-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--header-grad-1), var(--header-grad-2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            z-index: 1001;
+            animation: pulse-glow 3s infinite ease-in-out;
+            transition: transform 0.3s;
+        }
+        #chat-widget:hover { transform: scale(1.1); }
+ 
+        #chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 25px;
+            width: 350px;
+            max-width: 90vw;
+            height: 450px;
+            max-height: 70vh;
+            background: var(--section-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-out;
+        }
+        #chat-window.visible {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            visibility: visible;
+        }
+        .chat-header {
+            background: linear-gradient(135deg, var(--bg-grad-2), var(--bg-grad-1));
+            padding: 1em;
+            color: white;
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1em;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8em;
+        }
+        .chat-message {
+            padding: 0.7em 1em;
+            border-radius: 15px;
+            max-width: 80%;
+            line-height: 1.4;
+        }
+        .chat-message.user {
+            background: var(--primary-color);
+            color: var(--link-hover-color, #000);
+            align-self: flex-end;
+            border-bottom-right-radius: 3px;
+        }
+        .chat-message.bot {
+            background: var(--card-bg);
+            color: var(--text-dim);
+            align-self: flex-start;
+            border-bottom-left-radius: 3px;
+        }
+        .chat-input-form {
+            display: flex;
+            padding: 0.5em;
+            border-top: 1px solid var(--border-color);
+        }
+        #chat-input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            padding: 0.8em;
+            color: var(--text-color);
+            outline: none;
+        }
+        #chat-input::placeholder { color: var(--text-dim); }
+        .chat-input-form button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0 0.5em;
+            transition: color 0.3s;
+        }
+        .chat-input-form button:hover { color: white; }
+        
+        footer {
+            background: linear-gradient(135deg, var(--bg-grad-2), var(--bg-grad-1));
+            color: var(--text-color);
+            text-align: center;
+            padding: 1.5em 0;
+            margin-top: 3em;
+            border-top: 4px solid var(--border-color);
+            transition: all 0.5s;
+        }
+        footer p {
+            margin: 0;
+            font-size: 1em;
+            letter-spacing: 1.5px;
+        }
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -546,6 +739,10 @@
                 grid-template-columns: 1fr;
                 gap: 0.5em;
                 text-align: center;
+            }
+            .vibe-options {
+                flex-direction: column;
+                align-items: center;
             }
             .event-ticket a { justify-self: center; }
         }
@@ -698,10 +895,148 @@
             </div>
         </section>
     </div>
+ 
+    <div id="vibe-overlay" class="vibe-overlay">
+        <div class="vibe-modal">
+            <h2>Pick Your Vibe</h2>
+            <p>Customize your experience.</p>
+            <div class="vibe-options">
+                <button class="vibe-button" data-vibe="chill">Chill</button>
+                <button class="vibe-button" data-vibe="uplifting">Uplifting</button>
+                <button class="vibe-button" data-vibe="epic">Epic</button>
+            </div>
+        </div>
+    </div>
+ 
+    <div id="chat-widget" title="Talk to Iasmina">💬</div>
+    <div id="chat-window">
+        <div class="chat-header">Talk to Iasmina (AI)</div>
+        <div id="chat-messages" class="chat-messages">
+            <div class="chat-message bot">
+                Hey! Ask me about my next gig or my new album "Moonlight Reverie".
+            </div>
+        </div>
+        <form id="chat-input-form" class="chat-input-form">
+            <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+            <button type="submit" title="Send">➤</button>
+        </form>
+    </div>
+ 
     <footer>
         <p>© 2026 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
     </footer>
     <script>
+        // --- PERSONALIZED FAN JOURNEY & CHAT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const vibeOverlay = document.getElementById('vibe-overlay');
+            const themeToggle = document.getElementById('theme-toggle');
+            const audioElement = document.getElementById('audio-player');
+            const trackButtons = document.querySelectorAll('#track-list button');
+ 
+            const vibes = {
+                chill: { theme: 'midnight', track: 'audio/Ethereal-Echoes.mp3', icon: '🌙' },
+                uplifting: { theme: 'dark', track: 'audio/Starlight-Drift.mp3', icon: '☀️' },
+                epic: { theme: 'epic', track: 'audio/Neon-Pulse.mp3', icon: '🔥' }
+            };
+            const vibeKeys = Object.keys(vibes);
+ 
+            function applyVibe(vibe) {
+                if (!vibes[vibe]) return;
+ 
+                const { theme, track, icon } = vibes[vibe];
+                
+                // Apply theme
+                document.body.dataset.theme = theme;
+                themeToggle.textContent = icon;
+                localStorage.setItem('userVibe', vibe);
+ 
+                // Update playlist
+                if (audioElement && trackButtons.length > 0) {
+                    const targetButton = Array.from(trackButtons).find(btn => btn.dataset.src === track);
+                    if (targetButton) {
+                        document.querySelector('#track-list button.active')?.classList.remove('active');
+                        targetButton.classList.add('active');
+                        if (audioElement.src !== new URL(track, window.location.href).href) {
+                             audioElement.src = track;
+                             // Optional: auto-play if music was already playing
+                             if (!audioElement.paused) audioElement.play();
+                        }
+                    }
+                }
+            }
+ 
+            // Onboarding Modal Logic
+            const storedVibe = localStorage.getItem('userVibe');
+            if (!storedVibe) {
+                vibeOverlay.classList.add('visible');
+            } else {
+                applyVibe(storedVibe);
+            }
+ 
+            document.querySelectorAll('.vibe-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedVibe = button.dataset.vibe;
+                    applyVibe(selectedVibe);
+                    vibeOverlay.classList.remove('visible');
+                });
+            });
+ 
+            // Update Theme Toggler to cycle through vibes
+            themeToggle.addEventListener('click', () => {
+                const currentVibe = localStorage.getItem('userVibe') || 'chill';
+                const currentIndex = vibeKeys.indexOf(currentVibe);
+                const nextIndex = (currentIndex + 1) % vibeKeys.length;
+                applyVibe(vibeKeys[nextIndex]);
+            });
+ 
+            // Chat Bot Logic
+            const chatWidget = document.getElementById('chat-widget');
+            const chatWindow = document.getElementById('chat-window');
+            const chatMessages = document.getElementById('chat-messages');
+            const chatForm = document.getElementById('chat-input-form');
+            const chatInput = document.getElementById('chat-input');
+ 
+            chatWidget.addEventListener('click', () => {
+                chatWindow.classList.toggle('visible');
+                if (chatWindow.classList.contains('visible')) {
+                    chatInput.focus();
+                }
+            });
+ 
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const userInput = chatInput.value.trim();
+                if (!userInput) return;
+ 
+                addChatMessage(userInput, 'user');
+                chatInput.value = '';
+ 
+                setTimeout(() => {
+                    const botResponse = getBotResponse(userInput);
+                    addChatMessage(botResponse, 'bot');
+                }, 800);
+            });
+ 
+            function addChatMessage(message, sender) {
+                const messageEl = document.createElement('div');
+                messageEl.classList.add('chat-message', sender);
+                messageEl.textContent = message;
+                chatMessages.appendChild(messageEl);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+ 
+            function getBotResponse(input) {
+                const lowerInput = input.toLowerCase();
+                if (lowerInput.includes('gig') || lowerInput.includes('next') || lowerInput.includes('event') || lowerInput.includes('tour')) {
+                    return "My next big adventure is the World Tour 2026! You can see the first announced dates in the 'Events' section on this page.";
+                }
+                if (lowerInput.includes('moonlight') || lowerInput.includes('reverie') || lowerInput.includes('album')) {
+                    return 'My upcoming LP, "Moonlight Reverie", drops in November 2025! It\'s a very personal project and I can\'t wait for you to hear it. You can pre-save it now from the Bio section.';
+                }
+                return "That's an interesting question! I'm an AI with limited knowledge. For other inquiries, please check the page or use the contact info. 😊";
+            }
+        });
+ 
         // --- SMOOTH SCROLL & ACTIVE NAV ---
         document.querySelectorAll('nav a[href^="#"]').forEach(link => {
             link.addEventListener('click', function (event) {
@@ -736,13 +1071,6 @@
                 theme = 'dark';
                 themeToggle.textContent = '🌙';
             }
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-        });
-
-        // --- AUDIO VISUALIZER ---
-        window.addEventListener('load', () => {
-            const canvas = document.getElementById('visualizer-canvas');
             const audioElement = document.getElementById('audio-player');
             const header = document.querySelector('header');
         
