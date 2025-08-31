@@ -6,6 +6,7 @@
     <title>Musician Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/panolens@0.11.0/build/panolens.min.js"></script>
     <style>
         :root, [data-theme="dark"] {
             --bg-grad-1: #1d1f21;
@@ -429,6 +430,25 @@
             transform: scale(1.05);
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
+
+        /* AR Experience */
+        .ar-container {
+            margin-top: 2em;
+        }
+        .ar-button {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.8em 2em;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .ar-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
         
         /* Contact */
         .contact-badges {
@@ -619,10 +639,18 @@
             <div class="gallery-mosaic">
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/f80759/white?text=Photo" alt="Concert photo 1" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/c94b4b/white?text=Backstage" alt="Backstage photo" loading="lazy"></div>
-                <div class="mosaic-item"><img src="https://placehold.co/400x400/4b134f/white?text=Studio" alt="Studio photo" loading="lazy"></div>
+                <div class="mosaic-item" id="studio-panorama" title="360° Studio Tour - Drag to explore"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/dd2476/white?text=Live" alt="Live clip 1" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/ff512f/white?text=Live" alt="Live clip 2" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/0f0c29/white?text=Reel" alt="TikTok reel 2" loading="lazy"></div>
+            </div>
+        </section>
+ 
+        <section id="ar-experience" class="section scroll-animate">
+            <h2>AR Filter Preview</h2>
+            <p>Step into my world! Try on the signature "neon rose" sunglasses right in your browser.</p>
+            <div class="ar-container">
+                <a href="#" class="ar-button" target="_blank" title="Opens Spark AR lens">Launch AR Filter</a>
             </div>
         </section>
 
@@ -907,6 +935,18 @@
         document.querySelectorAll('.scroll-animate').forEach(el => {
             scrollObserver.observe(el);
         });
+
+        // --- PANOLENS 360 VIEWER ---
+        const panoramaContainer = document.getElementById('studio-panorama');
+        if (panoramaContainer) {
+            const panoramaImage = 'https://placehold.co/2048x1024/4b134f/white?text=360+Studio+View';
+            const panorama = new PANOLENS.ImagePanorama(panoramaImage);
+            const viewer = new PANOLENS.Viewer({
+                container: panoramaContainer,
+                controlBar: false, // Keep UI minimal in the mosaic
+            });
+            viewer.add(panorama);
+        }
     </script>
 </body>
 </html>
