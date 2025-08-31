@@ -9,12 +9,13 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1d1f21, #333);
-            color: white;
+            background: linear-gradient(135deg, #0f0c29, #302b63);
+            color: #f0f0f0;
             overflow-x: hidden;
+            transition: background 0.5s;
         }
         header {
-            background: linear-gradient(135deg, #ff512f, #dd2476);
+            background: linear-gradient(135deg, #c94b4b, #4b134f);
             color: white;
             padding: 1em 0;
             text-align: center;
@@ -22,7 +23,20 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            transition: background 0.5s;
         }
+        header a {
+            color: white;
+            text-decoration: none;
+            position: absolute;
+            left: 2em;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        header a:hover { color: #f80759; }
         header h1 {
             margin: 0;
             font-size: 2.5em;
@@ -35,38 +49,58 @@
             padding: 1em;
         }
         .blog-post {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             padding: 2em;
             margin-bottom: 2em;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            z-index: 1;
+        }
+        .blog-post::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transform: rotate(-2deg);
+            z-index: -1;
+            transition: transform 0.4s ease;
+        }
+        .blog-post:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+        }
+        .blog-post:hover::before {
+            transform: rotate(-4deg) scale(1.02);
         }
         .blog-post h2 {
-            color: #ff512f;
+            color: #f80759;
             font-size: 2em;
             margin-bottom: 0.5em;
         }
         .blog-post p {
             line-height: 1.6;
             font-size: 1.2em;
-            color: #ddd;
+            color: #ccc;
         }
         .blog-post a {
-            color: #ff512f;
+            color: #f80759;
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s;
         }
         .blog-post a:hover {
-            color: #dd2476;
+            color: #fff;
         }
         footer {
-            background: linear-gradient(135deg, #333, #1d1f21);
+            background: linear-gradient(135deg, #302b63, #0f0c29);
             color: white;
             text-align: center;
             padding: 1.5em 0;
-            margin-top: 3em;
-            border-top: 4px solid #ff512f;
+            margin-top: 4em;
+            border-top: 4px solid #f80759;
         }
         footer p {
             margin: 0;
@@ -74,7 +108,7 @@
             letter-spacing: 1.5px;
         }
         footer a {
-            color: #ff512f;
+            color: #f80759;
             text-decoration: none;
         }
     </style>
@@ -82,6 +116,7 @@
 </head>
 <body>
     <header>
+        <a href="index.html">← Back to Home</a>
         <h1>Blog</h1>
     </header>
     <div class="container">
@@ -99,7 +134,7 @@
         </div>
     </div>
     <footer>
-        <p>&copy; 2025 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
+        <p>&copy; 2025 <a href="index.html">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
     </footer>
 </body>
 </html>
