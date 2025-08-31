@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Musician Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <!-- Google Optimize Anti-flicker snippet -->
     <style>.async-hide { opacity: 0 !important} </style>
     <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
@@ -22,14 +21,13 @@
       gtag('config', 'G-XXXXXXXXXX');
       gtag('config', 'OPT-XXXXXXXX');
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/panolens@0.11.0/build/panolens.min.js"></script>
     <style>
         :root, [data-theme="dark"] {
             --bg-grad-1: #1d1f21;
             --bg-grad-2: #333;
             --header-grad-1: #ff512f;
             --header-grad-2: #dd2476;
-            --primary-color: #ff512f;
+            --primary-color: #d84223;
             --text-color: white;
             --text-dim: #ddd;
             --card-bg: rgba(255, 255, 255, 0.1);
@@ -48,7 +46,7 @@
             --bg-grad-2: #302b63;
             --header-grad-1: #c94b4b;
             --header-grad-2: #4b134f;
-            --primary-color: #f80759;
+            --primary-color: #d10045;
             --text-color: #f0f0f0;
             --text-dim: #aaa;
             --card-bg: rgba(255, 255, 255, 0.05);
@@ -67,7 +65,7 @@
             --bg-grad-2: #240b36;
             --header-grad-1: #fc4a1a;
             --header-grad-2: #f7b733;
-            --primary-color: #f7b733;
+            --primary-color: #c8921a;
             --text-color: #fff;
             --text-dim: #ccc;
             --card-bg: rgba(255, 255, 255, 0.1);
@@ -330,6 +328,35 @@
         .pre-save-button:hover, .share-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        /* Floating Vinyls for Parallax */
+        .vinyl {
+            position: absolute;
+            background: #222;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            z-index: 1; /* Below header but above some content */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* So they don't interfere with clicks */
+        }
+        .vinyl::before {
+            content: '';
+            width: 33%;
+            height: 33%;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 2px solid #111;
+        }
+        .vinyl::after {
+            content: '';
+            position: absolute;
+            width: 7%;
+            height: 7%;
+            background: #111;
+            border-radius: 50%;
         }
         .pre-save-button.spotify { background-color: #1DB954; }
         .pre-save-button.apple { background-color: #FA57C1; }
@@ -765,6 +792,11 @@
     </style>
 </head>
 <body data-theme="midnight">
+    <!-- Floating vinyls for parallax effect -->
+    <div class="rellax vinyl" data-rellax-speed="7" data-rellax-rotate-speed="2" style="top: 20%; left: 10%; width: 150px; height: 150px;"></div>
+    <div class="rellax vinyl" data-rellax-speed="4" data-rellax-rotate-speed="-1.5" style="top: 60%; left: 80%; width: 100px; height: 100px; opacity: 0.8;"></div>
+    <div class="rellax vinyl" data-rellax-speed="-2" data-rellax-rotate-speed="1" style="top: 85%; left: 25%; width: 80px; height: 80px; opacity: 0.7;"></div>
+
     <header>
         <h1>Iasmina Alexandra Ilie</h1>
         <button id="theme-toggle" class="theme-toggle" title="Toggle theme">☀️</button>
@@ -850,7 +882,7 @@
             <div class="gallery-mosaic">
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/f80759/white?text=Photo" alt="Concert photo 1" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/c94b4b/white?text=Backstage" alt="Backstage photo" loading="lazy"></div>
-                <div class="mosaic-item" id="studio-panorama" title="360° Studio Tour - Drag to explore"></div>
+                <div class="mosaic-item" id="studio-panorama" title="360° Studio Tour - Drag to explore" tabindex="0"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/dd2476/white?text=Live" alt="Live clip 1" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/ff512f/white?text=Live" alt="Live clip 2" loading="lazy"></div>
                 <div class="mosaic-item"><img src="https://placehold.co/400x400/0f0c29/white?text=Reel" alt="TikTok reel 2" loading="lazy"></div>
@@ -922,26 +954,34 @@
         </div>
     </div>
  
-    <div id="chat-widget" title="Talk to Iasmina">💬</div>
-    <div id="chat-window">
-        <div class="chat-header">Talk to Iasmina (AI)</div>
+    <div id="chat-widget" role="button" tabindex="0" aria-label="Open chat with Iasmina AI" aria-expanded="false">💬</div>
+    <div id="chat-window" role="dialog" aria-modal="true" aria-labelledby="chat-header-title">
+        <div class="chat-header"><span id="chat-header-title">Talk to Iasmina (AI)</span></div>
         <div id="chat-messages" class="chat-messages">
             <div class="chat-message bot">
                 Hey! Ask me about my next gig or my new album "Moonlight Reverie".
             </div>
         </div>
         <form id="chat-input-form" class="chat-input-form">
-            <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
-            <button type="submit" title="Send">➤</button>
+            <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off" aria-label="Chat message input">
+            <button type="submit" aria-label="Send message">➤</button>
         </form>
     </div>
  
+    <audio id="vinyl-crackle-sound" src="https://www.soundjay.com/mechanical/sounds/vinyl-crackle-1.mp3" preload="auto"></audio>
+    <audio id="whoosh-sound" src="https://www.soundjay.com/button/sounds/whoosh-01.mp3" preload="auto"></audio>
      <footer>
          <p>© 2026 <a href="#">Iasmina Alexandra Ilie</a>. All Rights Reserved.</p>
      </footer>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/rellax/1.12.1/rellax.min.js"></script>
      <script>
          // --- PERSONALIZED FAN JOURNEY & CHAT ---
          document.addEventListener('DOMContentLoaded', () => {
+            const vinylCrackle = document.getElementById('vinyl-crackle-sound');
+            if (vinylCrackle) {
+                vinylCrackle.volume = 0.1;
+                vinylCrackle.play().catch(e => console.warn("Vinyl crackle autoplay was blocked by the browser."));
+            }
             const vibeOverlay = document.getElementById('vibe-overlay');
             const themeToggle = document.getElementById('theme-toggle');
             const audioElement = document.getElementById('audio-player');
@@ -1002,6 +1042,66 @@
                 const nextIndex = (currentIndex + 1) % vibeKeys.length;
                 applyVibe(vibeKeys[nextIndex]);
             });
+
+            // Konami Code for secret theme
+            const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowleft', 'arrowright', 'arrowright', 'b', 'a'];
+            let konamiIndex = 0;
+            document.addEventListener('keydown', (e) => {
+                if (e.key.toLowerCase() === konamiCode[konamiIndex]) {
+                    konamiIndex++;
+                    if (konamiIndex === konamiCode.length) {
+                        konamiIndex = 0; // Reset
+                        unlockEclipseTheme();
+                    }
+                } else {
+                    konamiIndex = 0;
+                }
+            });
+
+            function unlockEclipseTheme() {
+                if (vibes.eclipse) return; // Already unlocked
+
+                console.log('Eclipse theme unlocked!');
+                localStorage.setItem('eclipseUnlocked', 'true');
+                vibes.eclipse = { theme: 'eclipse', track: 'audio/Starlight-Drift.mp3', icon: '🌑' };
+                vibeKeys.push('eclipse');
+                
+                applyVibe('eclipse');
+
+                const unlockedNotif = document.createElement('div');
+                unlockedNotif.textContent = 'ECLIPSE THEME UNLOCKED';
+                unlockedNotif.style.position = 'fixed';
+                unlockedNotif.style.top = '50%';
+                unlockedNotif.style.left = '50%';
+                unlockedNotif.style.transform = 'translate(-50%, -50%)';
+                unlockedNotif.style.background = 'var(--primary-color)';
+                unlockedNotif.style.color = 'black';
+                unlockedNotif.style.padding = '20px 40px';
+                unlockedNotif.style.borderRadius = '10px';
+                unlockedNotif.style.zIndex = '9999';
+                unlockedNotif.style.fontWeight = 'bold';
+                unlockedNotif.style.boxShadow = '0 0 20px black';
+                document.body.appendChild(unlockedNotif);
+                setTimeout(() => {
+                    unlockedNotif.style.transition = 'opacity 0.5s';
+                    unlockedNotif.style.opacity = '0';
+                    setTimeout(() => unlockedNotif.remove(), 500);
+                }, 2000);
+            }
+
+            // Parallax Vinyls
+            const vinyls = document.querySelectorAll('.vinyl');
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth) - 0.5;
+                const y = (e.clientY / window.innerHeight) - 0.5;
+
+                vinyls.forEach((vinyl, index) => {
+                    const speed = (index + 1) * 0.05; // Different speeds for each vinyl
+                    const translateX = -x * 30 * speed;
+                    const translateY = -y * 30 * speed;
+                    vinyl.style.transform = `translate(${translateX}px, ${translateY}px)`;
+                });
+            });
  
             // Chat Bot Logic
             const chatWidget = document.getElementById('chat-widget');
@@ -1011,9 +1111,18 @@
             const chatInput = document.getElementById('chat-input');
  
             chatWidget.addEventListener('click', () => {
-                chatWindow.classList.toggle('visible');
-                if (chatWindow.classList.contains('visible')) {
+                const isVisible = chatWindow.classList.toggle('visible');
+                chatWidget.setAttribute('aria-expanded', isVisible);
+                if (isVisible) {
                     chatInput.focus();
+                }
+            });
+ 
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && chatWindow.classList.contains('visible')) {
+                    chatWindow.classList.remove('visible');
+                    chatWidget.setAttribute('aria-expanded', 'false');
+                    chatWidget.focus();
                 }
             });
  
@@ -1091,6 +1200,14 @@
          document.querySelectorAll('nav a[href^="#"]').forEach(link => {
             link.addEventListener('click', function (event) {
                 event.preventDefault();
+
+                const whooshSound = document.getElementById('whoosh-sound');
+                if (whooshSound) {
+                    whooshSound.currentTime = 0;
+                    whooshSound.volume = 0.3;
+                    whooshSound.play().catch(e => {});
+                }
+
                 const targetId = this.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
                 if (targetElement) {
@@ -1105,42 +1222,60 @@
                 }
             });
         });
-
-        // --- THEME TOGGLER ---
-        const themeToggle = document.getElementById('theme-toggle');
-        const currentTheme = localStorage.getItem('theme') || 'dark';
-        document.body.setAttribute('data-theme', currentTheme);
-        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
-
-        themeToggle.addEventListener('click', () => {
-            let theme = document.body.getAttribute('data-theme');
-            if (theme === 'dark') {
-                theme = 'midnight';
-                themeToggle.textContent = '☀️';
-            } else {
-                theme = 'dark';
-                themeToggle.textContent = '🌙';
-            }
+ 
+        // --- LAZY-LOADING & DYNAMIC INITIALIZATION ---
+        const loadedScripts = new Set();
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                if (loadedScripts.has(src)) {
+                    return resolve();
+                }
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    loadedScripts.add(src);
+                    resolve();
+                };
+                script.onerror = reject;
+                document.body.appendChild(script);
+            });
+        }
+ 
+        function loadVisualizerDependencies() {
+            return loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
+        }
+ 
+        function loadPanoramaDependencies() {
+            return loadVisualizerDependencies()
+                .then(() => loadScript('https://cdn.jsdelivr.net/npm/panolens@0.11.0/build/panolens.min.js'));
+        }
+ 
+        function initVisualizer() {
+            if (document.body.dataset.visualizerInitialized) return;
+            document.body.dataset.visualizerInitialized = true;
+ 
             const audioElement = document.getElementById('audio-player');
             const header = document.querySelector('header');
-        
+            const canvas = document.getElementById('visualizer-canvas');
             let audioContext, analyser, source, dataArray, bufferLength;
             let scene, camera, renderer, visualizerObjects = {};
             let currentViz = 'bars';
             let beatTimeout;
-
-            // Three.js Scene Setup
+ 
+            function initThree() { /* ... */ } // (Implementation omitted for brevity, assumed from original code)
+            function initAudio() { /* ... */ }
+            function createVisualizers() { /* ... */ }
+            function animate() { /* ... */ }
+ 
+            // (The full implementation of the functions above is taken from the original code)
             function initThree() {
                 scene = new THREE.Scene();
                 camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
                 camera.position.z = 100;
-
                 renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
                 renderer.setSize(canvas.clientWidth, canvas.clientHeight);
                 renderer.setClearColor(0x000000, 0);
             }
-
-            // Web Audio API Setup
             function initAudio() {
                 if (audioContext) return;
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -1152,10 +1287,7 @@
                 bufferLength = analyser.frequencyBinCount;
                 dataArray = new Uint8Array(bufferLength);
             }
-
-            // Create Visualizers
             function createVisualizers() {
-                // Bars
                 const barsGroup = new THREE.Group();
                 const barWidth = canvas.clientWidth / bufferLength / 1.5;
                 for (let i = 0; i < bufferLength; i++) {
@@ -1167,22 +1299,16 @@
                 }
                 visualizerObjects.bars = barsGroup;
                 scene.add(barsGroup);
-
-                // Particles
                 const particleCount = 2000;
                 const particlesGeometry = new THREE.BufferGeometry();
                 const posArray = new Float32Array(particleCount * 3);
-                for (let i = 0; i < particleCount * 3; i++) {
-                    posArray[i] = (Math.random() - 0.5) * 200;
-                }
+                for (let i = 0; i < particleCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 200; }
                 particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
                 const particleMaterial = new THREE.PointsMaterial({ size: 0.5, color: 0xffffff });
                 const particles = new THREE.Points(particlesGeometry, particleMaterial);
                 particles.visible = false;
                 visualizerObjects.particles = particles;
                 scene.add(particles);
-
-                // Orbs
                 const orbGeometry = new THREE.SphereGeometry(20, 32, 32);
                 const orbMaterial = new THREE.MeshNormalMaterial({ wireframe: true });
                 const orb = new THREE.Mesh(orbGeometry, orbMaterial);
@@ -1190,68 +1316,29 @@
                 visualizerObjects.orbs = orb;
                 scene.add(orb);
             }
-            
-            // Animation Loop
             function animate() {
                 requestAnimationFrame(animate);
                 if (!analyser) return;
-
                 analyser.getByteFrequencyData(dataArray);
-
-                // Update active visualizer
-                if (currentViz === 'bars') {
-                    visualizerObjects.bars.children.forEach((bar, i) => {
-                        const scale = dataArray[i] / 5;
-                        bar.scale.y = Math.max(scale, 0.1);
-                    });
-                } else if (currentViz === 'particles') {
-                    const positions = visualizerObjects.particles.geometry.attributes.position.array;
-                    const lowFreq = dataArray[5] / 255; // Bass influence
-                    for (let i = 0; i < positions.length; i+=3) {
-                        positions[i+1] += lowFreq * (Math.random() - 0.5) * 2; // Move on Y axis
-                        if (positions[i+1] > 100) positions[i+1] = -100;
-                    }
-                    visualizerObjects.particles.geometry.attributes.position.needsUpdate = true;
-                    visualizerObjects.particles.rotation.y += lowFreq * 0.01;
-                } else if (currentViz === 'orbs') {
-                    const bass = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10;
-                    const mid = dataArray.slice(10, 50).reduce((a, b) => a + b, 0) / 40;
-                    const scale = 1 + (bass / 255) * 0.5;
-                    visualizerObjects.orbs.scale.set(scale, scale, scale);
-                    visualizerObjects.orbs.rotation.x += mid / 255 * 0.01;
-                    visualizerObjects.orbs.rotation.y += mid / 255 * 0.01;
-                }
-                
-                // Beat Detection
+                if (currentViz === 'bars') { visualizerObjects.bars.children.forEach((bar, i) => { const scale = dataArray[i] / 5; bar.scale.y = Math.max(scale, 0.1); }); }
+                else if (currentViz === 'particles') { const positions = visualizerObjects.particles.geometry.attributes.position.array; const lowFreq = dataArray[5] / 255; for (let i = 0; i < positions.length; i+=3) { positions[i+1] += lowFreq * (Math.random() - 0.5) * 2; if (positions[i+1] > 100) positions[i+1] = -100; } visualizerObjects.particles.geometry.attributes.position.needsUpdate = true; visualizerObjects.particles.rotation.y += lowFreq * 0.01; }
+                else if (currentViz === 'orbs') { const bass = dataArray.slice(0, 10).reduce((a, b) => a + b, 0) / 10; const mid = dataArray.slice(10, 50).reduce((a, b) => a + b, 0) / 40; const scale = 1 + (bass / 255) * 0.5; visualizerObjects.orbs.scale.set(scale, scale, scale); visualizerObjects.orbs.rotation.x += mid / 255 * 0.01; visualizerObjects.orbs.rotation.y += mid / 255 * 0.01; }
                 const bassEnergy = dataArray.slice(0, 5).reduce((a, b) => a + b, 0) / 5;
-                if (bassEnergy > 180 && !header.classList.contains('beat-pulse')) {
-                    header.classList.add('beat-pulse');
-                    clearTimeout(beatTimeout);
-                    beatTimeout = setTimeout(() => header.classList.remove('beat-pulse'), 120);
-                }
-                
+                if (bassEnergy > 180 && !header.classList.contains('beat-pulse')) { header.classList.add('beat-pulse'); clearTimeout(beatTimeout); beatTimeout = setTimeout(() => header.classList.remove('beat-pulse'), 120); }
                 renderer.render(scene, camera);
             }
-
-            // Event Listeners
-            audioElement.addEventListener('play', () => {
-                initAudio();
-                audioContext.resume();
-            });
-            
+ 
+            audioElement.addEventListener('play', () => { initAudio(); audioContext.resume(); });
             document.querySelectorAll('#viz-controls button').forEach(button => {
                 button.addEventListener('click', () => {
                     currentViz = button.dataset.viz;
                     Object.values(visualizerObjects).forEach(obj => obj.visible = false);
                     visualizerObjects[currentViz].visible = true;
-                    
                     document.querySelector('#viz-controls button.active').classList.remove('active');
                     button.classList.add('active');
                 });
             });
-            
-            const trackButtons = document.querySelectorAll('#track-list button');
-            trackButtons.forEach(button => {
+            document.querySelectorAll('#track-list button').forEach(button => {
                 button.addEventListener('click', () => {
                     audioElement.src = button.dataset.src;
                     audioElement.play();
@@ -1259,13 +1346,28 @@
                     button.classList.add('active');
                 });
             });
-            
-            // Set initial state
+ 
             initThree();
             createVisualizers();
             animate();
             audioElement.src = document.querySelector('#track-list button.active').dataset.src;
-        });
+        }
+ 
+        function initPanorama() {
+            if (document.body.dataset.panoramaInitialized) return;
+            document.body.dataset.panoramaInitialized = true;
+ 
+            const panoramaContainer = document.getElementById('studio-panorama');
+            if (panoramaContainer) {
+                const panoramaImage = 'https://placehold.co/2048x1024/4b134f/white?text=360+Studio+View';
+                const panorama = new PANOLENS.ImagePanorama(panoramaImage);
+                const viewer = new PANOLENS.Viewer({
+                    container: panoramaContainer,
+                    controlBar: false,
+                });
+                viewer.add(panorama);
+            }
+        }
 
         // --- TOUR DATES API SIMULATION ---
         const fetchTourStatus = () => {
@@ -1303,12 +1405,46 @@
             fetchTourStatus();
         }
  
+        // --- LAZY LOAD OBSERVER ---
+        const lazyLoadObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.id === 'music') {
+                        loadVisualizerDependencies().then(initVisualizer);
+                        observer.unobserve(entry.target);
+                    }
+                    if (entry.target.id === 'gallery') {
+                        loadPanoramaDependencies().then(initPanorama);
+                        observer.unobserve(entry.target);
+                    }
+                    if (entry.target.id === 'ar-experience') {
+                        console.log('AR section in view. Loading AR libraries would happen here.');
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        lazyLoadObserver.observe(document.getElementById('music'));
+        lazyLoadObserver.observe(document.getElementById('gallery'));
+        lazyLoadObserver.observe(document.getElementById('ar-experience'));
+
+
          // --- SCROLL ANIMATIONS ---
          const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in');
                     scrollObserver.unobserve(entry.target);
+
+                    // Lazy load visualizer when music section comes into view
+                    if (entry.target.id === 'music') {
+                        loadVisualizerDependencies().then(initVisualizer).catch(e => console.error("Failed to load visualizer:", e));
+                    }
+                    // Lazy load panorama when studio-panorama comes into view
+                    if (entry.target.id === 'studio-panorama') {
+                        loadPanoramaDependencies().then(initPanorama).catch(e => console.error("Failed to load panorama:", e));
+                    }
                 }
             });
         }, { threshold: 0.15 });
@@ -1317,16 +1453,20 @@
             scrollObserver.observe(el);
         });
 
-        // --- PANOLENS 360 VIEWER ---
-        const panoramaContainer = document.getElementById('studio-panorama');
-        if (panoramaContainer) {
-            const panoramaImage = 'https://placehold.co/2048x1024/4b134f/white?text=360+Studio+View';
-            const panorama = new PANOLENS.ImagePanorama(panoramaImage);
-            const viewer = new PANOLENS.Viewer({
-                container: panoramaContainer,
-                controlBar: false, // Keep UI minimal in the mosaic
+        // --- SCROLL-TRIGGERED 3D LAYERS (RELLAX) ---
+        if (typeof Rellax !== 'undefined' && window.innerWidth > 768) {
+            new Rellax('.rellax', {
+                // Rellax's own transform will be ignored because we're using a callback to set our own.
+                callback: function(position) {
+                    const rotateSpeed = parseFloat(this.el.dataset.rellaxRotateSpeed || 1);
+                    // Use the y position from Rellax to calculate rotation.
+                    // The multiplier (0.05) can be tweaked for desired rotation speed.
+                    const rotation = position.y * rotateSpeed * 0.05;
+                    
+                    // Apply both the parallax translation from Rellax and our custom rotation.
+                    this.el.style.transform = `translate3d(${position.x}px, ${position.y}px, 0) rotate(${rotation}deg)`;
+                }
             });
-            viewer.add(panorama);
         }
     </script>
 </body>
