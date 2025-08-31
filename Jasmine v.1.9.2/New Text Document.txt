@@ -1,0 +1,13 @@
+Fresh Content & Dynamic Feeds
+
+New Release Spotlight
+
+Swap the June 2025 EP mention for your upcoming “Moonlight Reverie” LP (dropping Nov 2025). Embed a pre-save module for Spotify, Apple Music, and Deezer with one-click share to socials.
+
+Tour 2026
+
+Replace the static ticket-stub list with a “World Tour” map: pins light up as they scroll into view. Pull live ticket availability via the Eventbrite API and flag sold-out dates.
+
+Fan Shoutouts
+
+Add a “Fan Wall” section that auto-imports tagged Instagram stories (#IasminaLive). Display the latest 6, with hover-to-pause video loops.
